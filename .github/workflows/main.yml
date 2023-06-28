@@ -1,0 +1,21 @@
+on: [push]
+
+jobs:
+  http_client_job:
+    runs-on: ubuntu-latest
+    name: A job to post http request
+    steps:
+      - name: HTTP Client Action
+        id: http-client-action
+        uses: pratikkamle/http-client-custom-action@v1.0.0
+        with:
+          url: 'https://enp7gmdcs56pb.x.pipedream.net/'
+          method: 'POST'
+          customHeaders: '{"Content-Type": "application/json"}'
+          data: '{"HTTP Custom action status": "Success"}'
+      # Use the output from the `http-client-action` step
+      - name: Get the response output
+        run: |
+          echo "The time HTTP request was made ${{ steps.hello.outputs.time }}"
+          echo ${{ steps.hello.outputs.response }}
+          echo ${{ steps.hello.outputs.headers }}
