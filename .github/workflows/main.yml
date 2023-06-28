@@ -5,12 +5,6 @@ jobs:
     runs-on: ubuntu-latest
     name: A job to post http request
     steps:
-      - name: Install Core
-        run: npm install @actions/core
-      - name: Install Github
-        run: npm install @actions/github
-      - name: Install axios
-        run: npm install axios
       - name: HTTP Client Action
         id: http-client-action
         uses: pratikkamle/http-client-custom-action@v1.0.0
