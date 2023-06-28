@@ -29,7 +29,7 @@ The headers received in the response
 ```yaml
 - name: HTTP Client Custom Action
   id: httpclient
-  uses: pratikkamle/http-client-custom-action@v1.0.0
+  uses: pratikkamle/http-client-custom-action@v1.0.1
   with:
     url: 'https://enp7gmdcs56pb.x.pipedream.net/'
     method: 'POST'
