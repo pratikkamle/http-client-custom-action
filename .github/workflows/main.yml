@@ -17,5 +17,5 @@ jobs:
       - name: Get the response output
         run: |
           echo "The time HTTP request was made ${{ steps.hello.outputs.time }}"
-          echo ${{ steps.hello.outputs.response }}
-          echo ${{ steps.hello.outputs.headers }}
+          echo ${{ steps.http-client-action.outputs.response }}
+          echo ${{ steps.http-client-action.outputs.headers }}
