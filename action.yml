@@ -1,0 +1,24 @@
+name: 'HTTP Client Custom Action'
+description: 'Custom action for doing the http operations'
+inputs:
+  data:
+    description: 'The data to include in the request body'
+    required: false
+  url:
+    description: 'The URL endpoint to send the HTTP request to'
+    required: true
+  customHeaders:
+    description: 'The headers to include in the request (in JSON format)'
+    required: true
+  method:
+    description: 'The HTTP method for the request'
+    required: true
+    default: 'post'
+outputs:
+  response:
+    description: 'The response body received from the POST request'
+  headers:
+    description: 'The headers received in the response'
+runs:
+  using: 'node16'
+  main: 'index.js'
