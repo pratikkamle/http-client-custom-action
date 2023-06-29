@@ -5,13 +5,9 @@ jobs:
     runs-on: ubuntu-latest
     name: A job to post http request
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Install Dependencies
-        run: npm install
       - name: HTTP Client Action
         id: http-client-action
-        uses: pratikkamle/http-client-custom-action@v1.0.2
+        uses: pratikkamle/http-client-custom-action@v1.1.0
         with:
           url: 'https://enp7gmdcs56pb.x.pipedream.net/'
           method: 'POST'
