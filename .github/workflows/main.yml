@@ -5,6 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     name: A job to post http request
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Install Dependencies
         run: npm install github:pratikkamle/http-client-custom-action@v1.0.1
       - name: HTTP Client Action
