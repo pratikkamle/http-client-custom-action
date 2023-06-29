@@ -11,12 +11,12 @@ jobs:
         run: npm install
       - name: HTTP Client Action
         id: http-client-action
-        uses: pratikkamle/http-client-custom-action@v1.0.1
+        uses: pratikkamle/http-client-custom-action@v1.0.2
         with:
           url: 'https://enp7gmdcs56pb.x.pipedream.net/'
           method: 'POST'
           customHeaders: '{"Content-Type": "application/json"}'
-          data: '{"HTTP Custom action status": "Success"}'
+          data: '{"HTTP Custom action status v1.0.2": "Success"}'
       # Use the output from the `http-client-action` step
       - name: Get the response output
         run: |
