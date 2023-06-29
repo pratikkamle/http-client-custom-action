@@ -8,7 +8,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Install Dependencies
-        run: npm install github:pratikkamle/http-client-custom-action@v1.0.1
+        run: npm install
       - name: HTTP Client Action
         id: http-client-action
         uses: pratikkamle/http-client-custom-action@v1.0.1
