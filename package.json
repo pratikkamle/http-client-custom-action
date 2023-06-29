@@ -1,7 +1,7 @@
 {
   "name": "http-client-custom-action",
   "version": "1.0.0",
-  "description": "",
+  "description": "This action will do HTTP operations.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
