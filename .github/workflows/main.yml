@@ -7,7 +7,7 @@ jobs:
     steps:
       - name: HTTP Client Action
         id: http-client-action
-        uses: http-client-custom-action@v1.0.1
+        uses: pratikkamle/http-client-custom-action@v1.0.1
         with:
           url: 'https://enp7gmdcs56pb.x.pipedream.net/'
           method: 'POST'
