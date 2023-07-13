@@ -10,7 +10,6 @@ jobs:
         uses: pratikkamle/http-client-custom-action@v2.0.1
         with:
           LeapDNABaseUrl: 'https://enp7gmdcs56pb.x.pipedream.net/'
-          ClientId: 'clientIdFromInput'
           ClientSecret: 'clientSecretFromInput'
           TenantId: 'TenantIdFromInput'
           CertificateBase64: 'CertificateBase64FromInput'
