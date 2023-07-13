@@ -7,7 +7,7 @@ jobs:
     steps:
       - name: HTTP Client Action
         id: http-client-action
-        uses: pratikkamle/http-client-custom-action@v2.0.0
+        uses: pratikkamle/http-client-custom-action@v2.0.1
         with:
           LeapDNABaseUrl: 'https://enp7gmdcs56pb.x.pipedream.net/'
           ClientId: 'clientIdFromInput'
