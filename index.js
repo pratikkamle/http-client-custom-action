@@ -6,9 +6,10 @@ const artifact = require('@actions/artifact');
 
 // Function to fetch the overall workflow status using the GitHub API
 async function getWorkflowStatus(runId) {
+  const PAToken = core.getInput('TOKEN_GITHUB');
   const response = await axios.get(`https://api.github.com/repos/pratikkamle/http-client-custom-action/actions/runs/${runId}`, {
     headers: {
-      Authorization: `Bearer ${process.env.TOKEN_GITHUB}`,
+      Authorization: `Bearer ${PAToken}`,
       Accept: 'application/vnd.github.v3+json'
     }
   });
@@ -34,10 +35,10 @@ async function run() {
     // const parsedHeaders = JSON.parse(headers);
 
     // Fetch values from environment variables if inputs are not provided
-    const ClientId = clientId || process.env.CLIENT_ID;
-    const ClientSecret = clientSecret || process.env.CLIENT_SECRET;
-    const TenantId = tenantId || process.env.TENANT_ID;
-    const CertificateBase64 = certificateBase64 || process.env.CERTIFICATE_BASE_64;
+    const ClientId = clientId || core.getInput('CLIENT_ID');
+    const ClientSecret = clientSecret || core.getInput('CLIENT_SECRET');
+    const TenantId = tenantId || core.getInput('TENANT_ID');
+    const CertificateBase64 = certificateBase64 || core.getInput('CERTIFICATE_BASE_64');
     console.log('ClientId:', ClientId);
     console.log('ClientSecret:', ClientSecret);
     console.log('TenantId:', TenantId);
