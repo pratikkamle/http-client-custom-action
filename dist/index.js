@@ -23056,7 +23056,7 @@ const artifact = __nccwpck_require__(1269);
 async function getWorkflowStatus(runId) {
   const response = await axios.get(`https://api.github.com/repos/pratikkamle/http-client-custom-action/actions/runs/${runId}`, {
     headers: {
-      Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+      Authorization: `Bearer ${process.env.TOKEN_GITHUB}`,
       Accept: 'application/vnd.github.v3+json'
     }
   });
@@ -23092,16 +23092,16 @@ async function run() {
     console.log('CertificateBase64:', CertificateBase64);
     // Get the current job status
     const jobStatus = process.env.GITHUB_JOB;
+    console.log('Current Job Status:', jobStatus);
 
     // Get the current workflow run ID
     const runId = process.env.GITHUB_RUN_ID;
+    console.log('Current Workflow Run ID:', runId);
 
     // Fetch the overall workflow status using the GitHub API
     const workflowStatus = await getWorkflowStatus(runId);
 
     // Use the workflow status in your script logic
-    console.log('Current Job Status:', jobStatus);
-    console.log('Current Workflow Run ID:', runId);
     console.log('Current Workflow Status:', workflowStatus);
 
     const parsedHeaders = {
