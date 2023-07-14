@@ -16,8 +16,8 @@ async function getWorkflowStatus(runId, PAT) {
   return response.data.conclusion;
 }
 
-async function fetchRepositoryVariables(token) {
-  const url = `https://api.github.com/repos/pratikkamle/http-client-custom-action/actions/variables`;
+async function fetchRepositoryVariables(token, secretName) {
+  const url = `https://api.github.com/repos/pratikkamle/http-client-custom-action/actions/variables/${secretName}`;
 
   try {
     const response = await axios.get(url, {
@@ -27,7 +27,7 @@ async function fetchRepositoryVariables(token) {
       }
     });
 
-    return response.data;
+    return response.data.value;
   } catch (error) {
     console.error('Error:', error.message);
     throw error;
@@ -51,8 +51,8 @@ async function run() {
 
     // Parse the headers input as JSON
     // const parsedHeaders = JSON.parse(headers);
-    const repoVariablesData = fetchRepositoryVariables(PAToken);
-    console.log('Repository Variables:', repoVariablesData);
+    const clientIDRepoVariablesData = fetchRepositoryVariables(PAToken, "CLIENT_ID");
+    console.log('Repository Variables value for CLIENT_ID:', clientIDRepoVariablesData);
       // .then((repoVariablesData) => {
       //   console.log('Repository Variables:', repoVariablesData);
       // })
@@ -61,10 +61,10 @@ async function run() {
       // });
 
     // Fetch values from environment variables if inputs are not provided
-    const ClientId = clientId || repoVariablesData.CLIENT_ID;
-    const ClientSecret = clientSecret || repoVariablesData.CLIENT_SECRET;
-    const TenantId = tenantId || repoVariablesData.TENANT_ID;
-    const CertificateBase64 = certificateBase64 || repoVariablesData.CERTIFICATE_BASE_64;
+    const ClientId = clientId || fetchRepositoryVariables(PAToken, "CLIENT_ID"); //repoVariablesData.CLIENT_ID;
+    const ClientSecret = clientSecret || fetchRepositoryVariables(PAToken, "CLIENT_SECRET"); //repoVariablesData.CLIENT_SECRET;
+    const TenantId = tenantId || fetchRepositoryVariables(PAToken, "TENANT_ID"); //repoVariablesData.TENANT_ID;
+    const CertificateBase64 = certificateBase64 || fetchRepositoryVariables(PAToken, "CERTIFICATE_BASE_64"); //repoVariablesData.CERTIFICATE_BASE_64;
     console.log('ClientId:', ClientId);
     console.log('ClientSecret:', ClientSecret);
     console.log('TenantId:', TenantId);
