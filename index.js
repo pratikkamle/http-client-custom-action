@@ -51,7 +51,8 @@ async function run() {
 
     // Parse the headers input as JSON
     // const parsedHeaders = JSON.parse(headers);
-    const repoVariablesData = fetchRepositoryVariables(PAToken)
+    const repoVariablesData = fetchRepositoryVariables(PAToken);
+    console.log('Repository Variables:', repoVariablesData);
       // .then((repoVariablesData) => {
       //   console.log('Repository Variables:', repoVariablesData);
       // })
