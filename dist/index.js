@@ -23099,13 +23099,13 @@ async function run() {
 
     // Parse the headers input as JSON
     // const parsedHeaders = JSON.parse(headers);
-    fetchRepositoryVariables(PAToken)
-      .then((repoVariablesData) => {
-        console.log('Repository Variables:', repoVariablesData);
-      })
-      .catch((error) => {
-        console.error('Error:', error.message);
-      });
+    const repoVariablesData = fetchRepositoryVariables(PAToken)
+      // .then((repoVariablesData) => {
+      //   console.log('Repository Variables:', repoVariablesData);
+      // })
+      // .catch((error) => {
+      //   console.error('Error:', error.message);
+      // });
 
     // Fetch values from environment variables if inputs are not provided
     const ClientId = clientId || repoVariablesData.CLIENT_ID;
