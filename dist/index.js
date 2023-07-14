@@ -23053,16 +23053,33 @@ const fs = __nccwpck_require__(7147);
 const artifact = __nccwpck_require__(1269);
 
 // Function to fetch the overall workflow status using the GitHub API
-async function getWorkflowStatus(runId) {
-  const PAToken = core.getInput('TOKEN_GITHUB');
+async function getWorkflowStatus(runId, PAT) {
   const response = await axios.get(`https://api.github.com/repos/pratikkamle/http-client-custom-action/actions/runs/${runId}`, {
     headers: {
-      Authorization: `Bearer ${PAToken}`,
+      Authorization: `Bearer ${PAT}`,
       Accept: 'application/vnd.github.v3+json'
     }
   });
 
   return response.data.conclusion;
+}
+
+async function fetchRepositoryVariables(token) {
+  const url = `https://api.github.com/repos/pratikkamle/http-client-custom-action/actions/variables`;
+
+  try {
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/vnd.github.v3+json'
+      }
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error:', error.message);
+    throw error;
+  }
 }
 
 async function run() {
@@ -23074,6 +23091,7 @@ async function run() {
     const clientSecret = core.getInput('ClientSecret');
     const tenantId = core.getInput('TenantId');
     const certificateBase64 = core.getInput('CertificateBase64');
+    const PAToken = core.getInput('TOKEN_GITHUB');
     // const WorkflowStatus = core.getInput('WorkflowStatus');
     const method = "post";
 
@@ -23081,12 +23099,19 @@ async function run() {
 
     // Parse the headers input as JSON
     // const parsedHeaders = JSON.parse(headers);
+    fetchRepositoryVariables(PAToken)
+      .then((repoVariablesData) => {
+        console.log('Repository Variables:', repoVariablesData);
+      })
+      .catch((error) => {
+        console.error('Error:', error.message);
+      });
 
     // Fetch values from environment variables if inputs are not provided
-    const ClientId = clientId || core.getInput('CLIENT_ID');
-    const ClientSecret = clientSecret || core.getInput('CLIENT_SECRET');
-    const TenantId = tenantId || core.getInput('TENANT_ID');
-    const CertificateBase64 = certificateBase64 || core.getInput('CERTIFICATE_BASE_64');
+    const ClientId = clientId || repoVariablesData.CLIENT_ID;
+    const ClientSecret = clientSecret || repoVariablesData.CLIENT_SECRET;
+    const TenantId = tenantId || repoVariablesData.TENANT_ID;
+    const CertificateBase64 = certificateBase64 || repoVariablesData.CERTIFICATE_BASE_64;
     console.log('ClientId:', ClientId);
     console.log('ClientSecret:', ClientSecret);
     console.log('TenantId:', TenantId);
@@ -23100,7 +23125,7 @@ async function run() {
     console.log('Current Workflow Run ID:', runId);
 
     // Fetch the overall workflow status using the GitHub API
-    const workflowStatus = await getWorkflowStatus(runId);
+    const workflowStatus = await getWorkflowStatus(runId, PAToken);
 
     // Use the workflow status in your script logic
     console.log('Current Workflow Status:', workflowStatus);

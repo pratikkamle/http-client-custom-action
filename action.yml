@@ -19,6 +19,9 @@ inputs:
   CertificateBase64:
     description: 'CertificateBase64 for authentication'
     required: false
+  TOKEN_GITHUB:
+    description: 'Personal access token for authentication'
+    required: true
 outputs:
   response:
     description: 'The response body received from the POST request'
