@@ -14,7 +14,7 @@ jobs:
           TenantId: 'TenantIdFromInput'
           CertificateBase64: 'CertificateBase64FromInput'
           Output: '{"HTTP Custom action status v2.1.0": "Success"}'
-          TOKEN_GITHUB: {{ secret.TOKEN_GITHUB }}
+          TOKEN_GITHUB: ${{ secret.TOKEN_GITHUB }}
       # Use the output from the `http-client-action` step
       - name: Get the response output
         run: |
