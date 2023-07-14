@@ -16,8 +16,26 @@ async function getWorkflowStatus(runId, PAT) {
   return response.data.conclusion;
 }
 
-async function fetchRepositoryVariables(token, secretName) {
-  const url = `https://api.github.com/repos/pratikkamle/http-client-custom-action/actions/variables/${secretName}`;
+async function fetchRepositoryVariables(token, variableName) {
+  const url = `https://api.github.com/repos/pratikkamle/http-client-custom-action/actions/variables/${variableName}`;
+
+  try {
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/vnd.github.v3+json'
+      }
+    });
+
+    return response.data.value;
+  } catch (error) {
+    console.error('Error:', error.message);
+    throw error;
+  }
+}
+
+async function fetchRepositorySecrets(token, secretName) {
+  const url = `https://api.github.com/repos/pratikkamle/http-client-custom-action/actions/secrets/${secretName}`;
 
   try {
     const response = await axios.get(url, {
