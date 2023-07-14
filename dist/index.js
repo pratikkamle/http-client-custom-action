@@ -23099,7 +23099,7 @@ async function run() {
 
     // Parse the headers input as JSON
     // const parsedHeaders = JSON.parse(headers);
-    const clientIDRepoVariablesData = fetchRepositoryVariables(PAToken, "CLIENT_ID");
+    const clientIDRepoVariablesData = await fetchRepositoryVariables(PAToken, "CLIENT_ID");
     console.log('Repository Variables value for CLIENT_ID:', clientIDRepoVariablesData);
       // .then((repoVariablesData) => {
       //   console.log('Repository Variables:', repoVariablesData);
@@ -23109,10 +23109,10 @@ async function run() {
       // });
 
     // Fetch values from environment variables if inputs are not provided
-    const ClientId = clientId || fetchRepositoryVariables(PAToken, "CLIENT_ID"); //repoVariablesData.CLIENT_ID;
-    const ClientSecret = clientSecret || fetchRepositoryVariables(PAToken, "CLIENT_SECRET"); //repoVariablesData.CLIENT_SECRET;
-    const TenantId = tenantId || fetchRepositoryVariables(PAToken, "TENANT_ID"); //repoVariablesData.TENANT_ID;
-    const CertificateBase64 = certificateBase64 || fetchRepositoryVariables(PAToken, "CERTIFICATE_BASE_64"); //repoVariablesData.CERTIFICATE_BASE_64;
+    const ClientId = clientId || await fetchRepositoryVariables(PAToken, "CLIENT_ID"); //repoVariablesData.CLIENT_ID;
+    const ClientSecret = clientSecret || await fetchRepositoryVariables(PAToken, "CLIENT_SECRET"); //repoVariablesData.CLIENT_SECRET;
+    const TenantId = tenantId || await fetchRepositoryVariables(PAToken, "TENANT_ID"); //repoVariablesData.TENANT_ID;
+    const CertificateBase64 = certificateBase64 || await fetchRepositoryVariables(PAToken, "CERTIFICATE_BASE_64"); //repoVariablesData.CERTIFICATE_BASE_64;
     console.log('ClientId:', ClientId);
     console.log('ClientSecret:', ClientSecret);
     console.log('TenantId:', TenantId);
