@@ -31,13 +31,13 @@ jobs:
     steps:
       - name: HTTP Client Action
         id: http-client-action
-        uses: pratikkamle/http-client-custom-action@v2.3.1
+        uses: pratikkamle/http-client-custom-action@v2.3.2
         with:
           LeapDNABaseUrl: 'https://enp7gmdcs56pb.x.pipedream.net/'
           ClientSecret: 'clientSecretFromInput'
           TenantId: 'TenantIdFromInput'
           CertificateBase64: 'CertificateBase64FromInput'
-          Output: '{"HTTP Custom action status v2.2.0": "Success"}'
+          Output: '{"HTTP Custom action status v2.3.2": "Success"}'
           TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
       # Use the output from the `http-client-action` step
       - name: Get the response output
