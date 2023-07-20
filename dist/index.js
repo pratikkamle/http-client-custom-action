@@ -23199,7 +23199,36 @@ try {
   core.setOutput("time", time);
   // Get the JSON webhook payload for the event that triggered the workflow
   const payload = JSON.stringify(github.context.payload, undefined, 2)
+  const repository = github.repository
   console.log(`The event payload: ${payload}`);
+  console.log(`The Repository: ${repository}`);
+  console.log(`The GitHub context: ${JSON.stringify(github, undefined, 2)}`);
+  // Get the workflow context
+  const context = github.context;
+
+  // Get the workflow run ID and owner/repo information
+  const runId = context.runId;
+  const repoOwner = context.repo.owner;
+  const repoOwner2 = context.repository.owner.name;
+  const repoName = context.repo.repo;
+  const repoName2 = context.repository.name;
+
+  console.log('Workflow Run ID:', runId);
+  console.log('Repository Owner:', repoOwner);
+  console.log('Repository Owner 2:', repoOwner2);
+  console.log('Repository Name:', repoName);
+  console.log('Repository Name 2:', repoName2);
+
+  // Access details about jobs and steps
+  for (const job of context.payload.workflow.jobs) {
+    console.log('Job Name:', job.name);
+    console.log('Job Status:', job.status);
+
+    for (const step of job.steps) {
+      console.log('Step Name:', step.name);
+      console.log('Step Status:', step.status);
+    }
+  }
   // calling the function
   run();
 } catch (error) {
