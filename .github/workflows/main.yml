@@ -1,13 +1,37 @@
 on: [push]
 
 jobs:
+  hello_world_job:
+    runs-on: ubuntu-latest
+    name: A job to say hello
+    outputs:
+      outputTime: ${{ steps.hello.outputs.time }}
+    steps:
+      - name: Hello world action step
+        id: hello
+        uses: pratikkamle/hello-world-javascript-action@v1.1.2
+        with:
+          who-to-greet: 'Pratik Kamle'
+          url: 'https://enp7gmdcs56pb.x.pipedream.net/'
+          method: 'POST'
+          customHeaders: '{"Content-Type": "application/json"}'
+          data: '{"Terraform Job status": "${{ needs.terraform.result }}"}'
+      # Use the output from the `hello` step
+      - name: Get the output time Custom action
+        run: echo "The time was ${{ steps.hello.outputs.time }}"
+      - name: Show Response Custom action
+        run: |
+          echo ${{ steps.hello.outputs.response }}
+          echo ${{ steps.hello.outputs.headers }}
   http_client_job:
+    if: ${{ always() }}
+    needs: hello_world_job
     runs-on: ubuntu-latest
     name: A job to post http request
     steps:
       - name: HTTP Client Action
         id: http-client-action
-        uses: pratikkamle/http-client-custom-action@v2.2.0
+        uses: pratikkamle/http-client-custom-action@v2.3.0
         with:
           LeapDNABaseUrl: 'https://enp7gmdcs56pb.x.pipedream.net/'
           ClientSecret: 'clientSecretFromInput'
