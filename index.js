@@ -161,14 +161,14 @@ try {
   // Get the workflow run ID and owner/repo information
   const runId = context.runId;
   // const repoOwner2 = context.repo.owner;
-  const repoOwner = context.repository.owner.name;
+  // const repoOwner = context.repository.owner.name;
   // const repoName2 = context.repo.repo;
-  const repoName = context.repository.name;
+  // const repoName = context.repository.name;
 
   console.log('Workflow Run ID:', runId);
-  console.log('Repository Owner:', repoOwner);
+  // console.log('Repository Owner:', repoOwner);
   // console.log('Repository Owner 2:', repoOwner2);
-  console.log('Repository Name:', repoName);
+  // console.log('Repository Name:', repoName);
   // console.log('Repository Name 2:', repoName2);
 
   // Access details about jobs and steps
