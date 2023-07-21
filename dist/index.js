@@ -23100,6 +23100,25 @@ async function fetchRepositorySecrets(token, secretName) {
   }
 }
 
+async function getJobsAndSteps(owner, repo, runId, token) {
+  const url = `https://api.github.com/repos/${owner}/${repo}/actions/runs/${runId}/jobs`;
+
+  try {
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/vnd.github.v3+json'
+      }
+    });
+
+    return response.data.jobs;
+  } catch (error) {
+    console.error('Error:', error.message);
+    throw error;
+  }
+}
+
+
 async function run() {
   try {
     // Get inputs using the GitHub Core library
@@ -23112,6 +23131,35 @@ async function run() {
     const PAToken = core.getInput('TOKEN_GITHUB');
     // const WorkflowStatus = core.getInput('WorkflowStatus');
     const method = "post";
+    // Get the workflow context
+    const context = github.context;
+
+    // Get the workflow run ID and owner/repo information
+    const runId = context.runId;
+
+    // Get repository owner and name from the environment variables GITHUB_REPOSITORY
+    const [repoOwner, repoName] = process.env.GITHUB_REPOSITORY.split('/');
+    const token = core.getInput('TOKEN_GITHUB');
+
+    console.log('Workflow Run ID:', runId);
+    console.log('Repository Owner:', repoOwner);
+    console.log('Repository Name:', repoName);
+
+    // Fetch details of jobs and steps from the specific workflow run
+    const jobs = await getJobsAndSteps(repoOwner, repoName, runId, token);
+
+    // Log details of jobs and their respective steps
+    jobs.forEach((job) => {
+      console.log('Job Name:', job.name);
+      console.log('Job Status:', job.status);
+      console.log('Job conclusion:', job.conclusion);
+
+      job.steps.forEach((step) => {
+        console.log('Step Name:', step.name);
+        console.log('Step Status:', step.status);
+        console.log('Step conclusion:', step.conclusion);
+      });
+    });
 
     // const headers = core.getInput('headers');
 
@@ -23139,12 +23187,12 @@ async function run() {
     const jobStatus = process.env.GITHUB_JOB;
     console.log('Current Job Status:', jobStatus);
 
-    // Get the current workflow run ID
-    const runId = process.env.GITHUB_RUN_ID;
-    console.log('Current Workflow Run ID:', runId);
+    // // Get the current workflow run ID
+    // const runId = process.env.GITHUB_RUN_ID;
+    // console.log('Current Workflow Run ID:', runId);
 
-    // Fetch the overall workflow status using the GitHub API
-    const workflowStatus = await getWorkflowStatus(runId, PAToken);
+    // // Fetch the overall workflow status using the GitHub API
+    // const workflowStatus = await getWorkflowStatus(runId, PAToken);
 
     // Use the workflow status in your script logic
     console.log('Current Workflow Status:', workflowStatus);
@@ -23197,38 +23245,14 @@ async function run() {
 try {
   const time = (new Date()).toTimeString();
   core.setOutput("time", time);
+
   // Get the JSON webhook payload for the event that triggered the workflow
   const payload = JSON.stringify(github.context.payload, undefined, 2)
-  // const repository = github.repository
-  console.log(`The event payload: ${payload}`);
+  // console.log(`The event payload: ${payload}`);
+
   // console.log(`The Repository: ${repository}`);
-  console.log(`The GitHub context: ${JSON.stringify(github, undefined, 2)}`);
-  // Get the workflow context
-  const context = github.context;
+  // console.log(`The GitHub context: ${JSON.stringify(github, undefined, 2)}`);
 
-  // Get the workflow run ID and owner/repo information
-  const runId = context.runId;
-  // const repoOwner2 = context.repo.owner;
-  // const repoOwner = context.repository.owner.name;
-  // const repoName2 = context.repo.repo;
-  // const repoName = context.repository.name;
-
-  console.log('Workflow Run ID:', runId);
-  // console.log('Repository Owner:', repoOwner);
-  // console.log('Repository Owner 2:', repoOwner2);
-  // console.log('Repository Name:', repoName);
-  // console.log('Repository Name 2:', repoName2);
-
-  // Access details about jobs and steps
-  for (const job of context.payload.workflow.jobs) {
-    console.log('Job Name:', job.name);
-    console.log('Job Status:', job.status);
-
-    for (const step of job.steps) {
-      console.log('Step Name:', step.name);
-      console.log('Step Status:', step.status);
-    }
-  }
   // calling the function
   run();
 } catch (error) {
