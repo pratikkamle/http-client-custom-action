@@ -5,8 +5,8 @@ const fs = require('fs');
 const artifact = require('@actions/artifact');
 
 // Function to fetch the overall workflow status using the GitHub API
-async function getWorkflowStatus(runId, PAT) {
-  const response = await axios.get(`https://api.github.com/repos/pratikkamle/http-client-custom-action/actions/runs/${runId}`, {
+async function getWorkflowStatus(owner, repo, runId, PAT) {
+  const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}/actions/runs/${runId}`, {
     headers: {
       Authorization: `Bearer ${PAT}`,
       Accept: 'application/vnd.github.v3+json'
@@ -16,8 +16,8 @@ async function getWorkflowStatus(runId, PAT) {
   return response.data.conclusion;
 }
 
-async function fetchRepositoryVariables(token, variableName) {
-  const url = `https://api.github.com/repos/pratikkamle/http-client-custom-action/actions/variables/${variableName}`;
+async function fetchRepositoryVariables(owner, repo, token, variableName) {
+  const url = `https://api.github.com/repos/${owner}/${repo}/actions/variables/${variableName}`;
 
   try {
     const response = await axios.get(url, {
@@ -34,8 +34,8 @@ async function fetchRepositoryVariables(token, variableName) {
   }
 }
 
-async function fetchRepositorySecrets(token, secretName) {
-  const url = `https://api.github.com/repos/pratikkamle/http-client-custom-action/actions/secrets/${secretName}`;
+async function fetchRepositorySecrets(owner, repo, token, secretName) {
+  const url = `https://api.github.com/repos/${owner}/${repo}/actions/secrets/${secretName}`;
 
   try {
     const response = await axios.get(url, {
@@ -91,14 +91,13 @@ async function run() {
 
     // Get repository owner and name from the environment variables GITHUB_REPOSITORY
     const [repoOwner, repoName] = process.env.GITHUB_REPOSITORY.split('/');
-    const token = core.getInput('TOKEN_GITHUB');
 
     console.log('Workflow Run ID:', runId);
     console.log('Repository Owner:', repoOwner);
     console.log('Repository Name:', repoName);
 
     // Fetch details of jobs and steps from the specific workflow run
-    const jobs = await getJobsAndSteps(repoOwner, repoName, runId, token);
+    const jobs = await getJobsAndSteps(repoOwner, repoName, runId, PAToken);
 
     // Log details of jobs and their respective steps
     jobs.forEach((job) => {
@@ -113,24 +112,11 @@ async function run() {
       });
     });
 
-    // const headers = core.getInput('headers');
-
-    // Parse the headers input as JSON
-    // const parsedHeaders = JSON.parse(headers);
-    const clientIDRepoVariablesData = await fetchRepositoryVariables(PAToken, "CLIENT_ID");
-    console.log('Repository Variables value for CLIENT_ID:', clientIDRepoVariablesData);
-      // .then((repoVariablesData) => {
-      //   console.log('Repository Variables:', repoVariablesData);
-      // })
-      // .catch((error) => {
-      //   console.error('Error:', error.message);
-      // });
-
     // Fetch values from environment variables if inputs are not provided
-    const ClientId = clientId || await fetchRepositoryVariables(PAToken, "CLIENT_ID"); //repoVariablesData.CLIENT_ID;
-    const ClientSecret = clientSecret || await fetchRepositoryVariables(PAToken, "CLIENT_SECRET"); //repoVariablesData.CLIENT_SECRET;
-    const TenantId = tenantId || await fetchRepositoryVariables(PAToken, "TENANT_ID"); //repoVariablesData.TENANT_ID;
-    const CertificateBase64 = certificateBase64 || await fetchRepositoryVariables(PAToken, "CERTIFICATE_BASE_64"); //repoVariablesData.CERTIFICATE_BASE_64;
+    const ClientId = clientId || await fetchRepositoryVariables(repoOwner, repoName, PAToken, "CLIENT_ID"); //repoVariablesData.CLIENT_ID;
+    const ClientSecret = clientSecret || await fetchRepositoryVariables(repoOwner, repoName, PAToken, "CLIENT_SECRET"); //repoVariablesData.CLIENT_SECRET;
+    const TenantId = tenantId || await fetchRepositoryVariables(repoOwner, repoName, PAToken, "TENANT_ID"); //repoVariablesData.TENANT_ID;
+    const CertificateBase64 = certificateBase64 || await fetchRepositoryVariables(repoOwner, repoName, PAToken, "CERTIFICATE_BASE_64"); //repoVariablesData.CERTIFICATE_BASE_64;
     console.log('ClientId:', ClientId);
     console.log('ClientSecret:', ClientSecret);
     console.log('TenantId:', TenantId);
@@ -144,17 +130,17 @@ async function run() {
     // console.log('Current Workflow Run ID:', runId);
 
     // // Fetch the overall workflow status using the GitHub API
-    // const workflowStatus = await getWorkflowStatus(runId, PAToken);
+    // const workflowStatus = await getWorkflowStatus(repoOwner, repoName, runId, PAToken);
 
     // Use the workflow status in your script logic
-    console.log('Current Workflow Status:', workflowStatus);
+    // console.log('Current Workflow Status:', workflowStatus);
 
     const parsedHeaders = {
       "Content-Type": "application/json"
     };
 
     // Create the request body
-    const parsedOutput = JSON.parse(Output);
+    const parsedOutput = JSON.parse(jobs);
     // const requestBody = {
     //   Output: Output
     // };
