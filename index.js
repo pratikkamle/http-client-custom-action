@@ -140,7 +140,7 @@ async function run() {
     };
 
     // Create the request body
-    const parsedOutput = JSON.parse(jobs);
+    const parsedOutput = jobs; // JSON.parse(jobs);
     // const requestBody = {
     //   Output: Output
     // };
