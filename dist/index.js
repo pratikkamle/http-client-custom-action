@@ -23144,6 +23144,11 @@ async function run() {
     console.log('Repository Owner:', repoOwner);
     console.log('Repository Name:', repoName);
 
+    const Input1 = process.env.Input1;
+    const Input2 = process.env.Input2;
+    console.log('Input1 from worklow:', Input1);
+    console.log('Input2 from workflow:', Input2);
+
     // Fetch details of jobs and steps from the specific workflow run
     const jobs = await getJobsAndSteps(repoOwner, repoName, runId, PAToken);
 
