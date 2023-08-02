@@ -23144,8 +23144,8 @@ async function run() {
     console.log('Repository Owner:', repoOwner);
     console.log('Repository Name:', repoName);
 
-    const Input1 = process.env.Input1;
-    const Input2 = process.env.Input2;
+    const Input1 = process.env.INPUT_Input1;
+    const Input2 = process.env.INPUT_Input2;
     console.log('Input1 from worklow:', Input1);
     console.log('Input2 from workflow:', Input2);
 
